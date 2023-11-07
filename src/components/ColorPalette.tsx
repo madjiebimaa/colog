@@ -1,10 +1,8 @@
 'use client';
 
 import { Color } from '@/lib/types';
-import { useColorActions } from '@/store/color';
-import { usePositionActions } from '@/store/position';
-import { MouseEvent, useRef, useState } from 'react';
-import { MdContentCopy, MdFormatColorFill, MdZoomOutMap } from 'react-icons/md';
+import { useRef, useState } from 'react';
+import Tools from './Tools';
 
 interface ColorPaletteProps {
   color: Color;
@@ -12,31 +10,7 @@ interface ColorPaletteProps {
 
 export default function ColorPalette({ color }: ColorPaletteProps) {
   const ref = useRef<HTMLDivElement>(null);
-
   const [colorText, setColorText] = useState(color.name);
-  const colorActions = useColorActions();
-  const positionActions = usePositionActions();
-
-  const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(color.hexCode);
-  };
-
-  const handleZoomOutColor = (event: MouseEvent<HTMLButtonElement>) => {
-    if (ref.current) {
-      const colorPaletteWidth = ref.current.offsetWidth;
-      const colorPaletteHeight = ref.current.offsetHeight;
-
-      colorActions.zoomOutColor(color.hexCode);
-      positionActions.setPagePosition(
-        event.pageX - colorPaletteWidth,
-        event.pageY - colorPaletteHeight
-      );
-    }
-  };
-
-  const handleChangeBackgroundColor = () => {
-    colorActions.changeBackgroundColor(color.hexCode);
-  };
 
   return (
     <div
@@ -53,24 +27,7 @@ export default function ColorPalette({ color }: ColorPaletteProps) {
       />
       <p className="text-gray-900">{colorText}</p>
       <div className="flex invisible group-hover/color-palette:visible bg-gray-200 rounded-full p-1">
-        <button
-          onClick={handleCopyToClipboard}
-          className="shrink-0 bg-transparent hover:bg-gray-300 rounded-full py-1 px-2 text-xs text-gray-900 font-semibold"
-        >
-          <MdContentCopy size={18} className="text-gray-900" />
-        </button>
-        <button
-          onClick={handleZoomOutColor}
-          className="shrink-0 bg-transparent hover:bg-gray-300 rounded-full py-1 px-2 text-xs text-gray-900 font-semibold"
-        >
-          <MdZoomOutMap size={18} className="text-gray-900" />
-        </button>
-        <button
-          onClick={handleChangeBackgroundColor}
-          className="shrink-0 bg-transparent hover:bg-gray-300 rounded-full py-1 px-2 text-xs text-gray-900 font-semibold"
-        >
-          <MdFormatColorFill size={18} className="text-gray-900" />
-        </button>
+        <Tools paletteRef={ref} hexCode={color.hexCode} />
       </div>
     </div>
   );

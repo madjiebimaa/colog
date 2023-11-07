@@ -12,7 +12,7 @@ export default function ColorModal() {
     colorActions.zoomInColor();
     setTimeout(() => {
       window.scrollTo({ left: x, top: y, behavior: 'smooth' });
-    }, 1000);
+    }, 500);
   };
 
   return (
