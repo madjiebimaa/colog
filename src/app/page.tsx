@@ -1,11 +1,11 @@
 'use client';
 
+import ColorModal from '@/components/ColorModal';
 import ColorPalette from '@/components/ColorPalette';
 import { useBackgroundColor, useIsColorModalShow } from '@/store/color';
 import { Noto_Sans_Mono } from 'next/font/google';
 import { BsGithub } from 'react-icons/bs';
 import vinilexColors from './data/vinilex-colors.json';
-import ColorModal from '@/components/ColorModal';
 
 const notoSansMono = Noto_Sans_Mono({ subsets: ['latin'] });
 

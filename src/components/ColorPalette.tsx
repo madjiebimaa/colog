@@ -2,7 +2,8 @@
 
 import { Color } from '@/lib/types';
 import { useColorActions } from '@/store/color';
-import { MouseEvent, useState } from 'react';
+import { usePositionActions } from '@/store/position';
+import { MouseEvent, useRef, useState } from 'react';
 import { MdContentCopy, MdFormatColorFill, MdZoomOutMap } from 'react-icons/md';
 
 interface ColorPaletteProps {
@@ -10,15 +11,27 @@ interface ColorPaletteProps {
 }
 
 export default function ColorPalette({ color }: ColorPaletteProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
   const [colorText, setColorText] = useState(color.name);
   const colorActions = useColorActions();
+  const positionActions = usePositionActions();
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(color.hexCode);
   };
 
   const handleZoomOutColor = (event: MouseEvent<HTMLButtonElement>) => {
-    colorActions.zoomOutColor(color.hexCode);
+    if (ref.current) {
+      const colorPaletteWidth = ref.current.offsetWidth;
+      const colorPaletteHeight = ref.current.offsetHeight;
+
+      colorActions.zoomOutColor(color.hexCode);
+      positionActions.setPagePosition(
+        event.pageX - colorPaletteWidth,
+        event.pageY - colorPaletteHeight
+      );
+    }
   };
 
   const handleChangeBackgroundColor = () => {
@@ -26,7 +39,10 @@ export default function ColorPalette({ color }: ColorPaletteProps) {
   };
 
   return (
-    <div className="group/color-palette flex flex-col justify-center items-center gap-2">
+    <div
+      ref={ref}
+      className="group/color-palette flex flex-col justify-center items-center gap-2"
+    >
       <div
         onMouseEnter={() => setColorText(color.hexCode)}
         onMouseLeave={() => setColorText(color.name)}
