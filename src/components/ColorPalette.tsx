@@ -25,7 +25,7 @@ export default function ColorPalette({ color }: ColorPaletteProps) {
         }}
         className="h-24 w-24 rounded-full shadow-md hover:scale-110 transition ease-in-out delay-150 duration-300"
       />
-      <p className="text-gray-900">{colorText}</p>
+      <p className="text-center text-gray-900">{colorText}</p>
       <div className="flex invisible group-hover/color-palette:visible bg-gray-200 rounded-full p-1">
         <Tools paletteRef={ref} hexCode={color.hexCode} />
       </div>
