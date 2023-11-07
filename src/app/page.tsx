@@ -1,13 +1,25 @@
+'use client';
+
 import ColorPalette from '@/components/ColorPalette';
+import { useBackgroundColor, useIsColorModalShow } from '@/store/color';
 import { Noto_Sans_Mono } from 'next/font/google';
 import { BsGithub } from 'react-icons/bs';
 import vinilexColors from './data/vinilex-colors.json';
+import ColorModal from '@/components/ColorModal';
 
 const notoSansMono = Noto_Sans_Mono({ subsets: ['latin'] });
 
 export default function Home() {
-  return (
-    <main className="min-h-screen flex flex-col gap-10 p-5">
+  const backgroundColor = useBackgroundColor();
+  const isColorModalShow = useIsColorModalShow();
+
+  return isColorModalShow ? (
+    <ColorModal />
+  ) : (
+    <main
+      style={{ backgroundColor }}
+      className="min-h-screen flex flex-col gap-10 p-5"
+    >
       <div className="flex flex-col gap-3">
         <p className={`${notoSansMono.className} text-sm text-gray-900`}>
           <b className="font-bold">Colog </b>
